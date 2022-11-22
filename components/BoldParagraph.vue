@@ -1,17 +1,19 @@
 <template>
   <div class="container-span">
-    <slot></slot>
+    <slot>
+      <span></span>
+    </slot>
   </div>
 </template>
 
 <script>
 export default {
-  name: "BuildParagraph",
+  name: "BoldParagraph",
 }
 </script>
 
 <style scoped>
-  span {
+  .container-span {
     font-family: 'Public Sans';
     font-style: normal;
     font-weight: 700;

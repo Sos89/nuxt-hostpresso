@@ -1,10 +1,11 @@
 <template>
-$END$
+<div>test</div>
 </template>
 
 <script>
 export default {
-name: "index"
+  name: "test",
+  layout: 'SideBar'
 }
 </script>
 

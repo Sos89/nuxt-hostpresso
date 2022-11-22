@@ -1,26 +1,19 @@
 <template>
-  <div>
-    <slot></slot>
+  <div class="container-span">
+    <slot>
+      <span></span>
+    </slot>
   </div>
 </template>
 
 <script>
 export default {
-  name: "InfoComponent",
+  name: "PageParagraph",
 }
 </script>
 
 <style scoped>
-  h3 {
-    font-family: 'Public Sans';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 33px;
-    line-height: 43px;
-    color: #191919;
-    margin-top: 24px;
-  }
-  p{
+  .container-span{
     font-family: 'Public Sans';
     font-style: normal;
     font-weight: 400;

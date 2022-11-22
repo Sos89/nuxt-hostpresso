@@ -1,108 +1,141 @@
 <template>
-  <div class="forgot_password_page m-auto">
-    <ErrorMessageComponent
-      v-if="message"
-      icon="fa-solid fa-circle-exclamation"
-    >
-      <p class="mt-3 ml-3"> Account details not recognised, please try again. </p>
-    </ErrorMessageComponent>
+  <div class="reset_password_page m-auto">
 
-    <BuildParagraph>
-      <span>Forgot password?</span>
-    </BuildParagraph>
+    <BoldParagraph>
+      <span>Reset password?</span>
+    </BoldParagraph>
 
     <PageParagraph>
-      <span>Enter your email address and we'll send you a password reset link.</span>
+      <span>Please enter a new password</span>
     </PageParagraph>
 
-    <InputWithLabelComponent
-      type="email"
-      :label="label"
-      v-model="email"
-    />
+
+    <div v-for="input in inputs">
+      <InputWithLabelComponent
+        :type="input.type"
+        :label="input.label"
+        v-model="input.value"
+      >
+        <i @click="showPassword(input.id)" class="fa-solid fa-eye btn"></i>
+      </InputWithLabelComponent>
+      <div class="errorMessage">
+        <ErrorMessageComponent v-if="input.errors">
+          <span>{{ input.errors }}</span>
+        </ErrorMessageComponent>
+      </div>
+    </div>
+
+    <div class="errorMessage">
+      <ErrorMessageComponent v-if="errorConfirm">
+        <p>Passwords do not match</p>
+      </ErrorMessageComponent>
+    </div>
 
     <ButtonComponent>
-      <button
-        class="btn button"
-        @click="forgotPassword"
-      >Send reset link</button>
-
-      <b-modal ref="my-modal" id="modal-1" hide-footer>
-        <div class="bg_fon">
-          <IconComponent icon="fa-solid fa-check"/>
-        </div>
-        <BuildParagraph class="text-center my-3">
-          <span>Password link sent</span>
-        </BuildParagraph>
-
-        <PageParagraph class="text-center mb-5">
-          <span>Please check your inbox elliot@gmail.com</span>
-        </PageParagraph>
-      </b-modal>
+      <span
+        @click="signUp"
+        class="buttonValue"
+      >Login</span>
     </ButtonComponent>
   </div>
 </template>
 <script>
 export default {
-  name: 'Forgot-password-page',
+  name: 'Reset-password-page',
   layout: 'AuthenticationLayout',
   data(){
     return {
-      label: 'Email address',
-      email: '',
-      message: false
+      message: false,
+      errorConfirm: false,
+      inputs: {
+        password: {
+          id: 1,
+          type: 'password',
+          label: 'Password',
+          value: '',
+          errors: ''
+        },
+        confirmPassword: {
+          id: 2,
+          type: 'password',
+          label: 'Confirm Password',
+          value: '',
+          errors: ''
+        }
+      },
     }
   },
   methods: {
-    forgotPassword(){
-      if (this.email){
-        this.$refs['my-modal'].show()
-      }else{
-        this.message = true
+    showPassword(id){
+      if (this.inputs.password.id === id){
+        this.inputs.password.type = this.inputs.password.type ==='text' ? 'password': 'text'
       }
+      if (this.inputs.confirmPassword.id === id){
+        this.inputs.confirmPassword.type = this.inputs.confirmPassword.type ==='text' ? 'password': 'text';
+      }
+    },
+    signUp(){
+        if (this.inputs.confirmPassword.value !== this.inputs.password.value){
+          this.errorConfirm = true
+        }
+      let valid = true;
+      if (!this.validPassword(this.inputs.password.value)) {
+        this.inputs.password.errors = 'Incorrect password';
+        valid = false;
+      }
+      if (!this.inputs.confirmPassword.value) {
+        this.inputs.confirmPassword.errors = 'Password required';
+        valid = false;
+      }
+      if (!this.validPassword(this.inputs.confirmPassword.value)) {
+        this.inputs.confirmPassword.errors = 'Incorrect password';
+        valid = false;
+      }
+      if (this.inputs.confirmPassword.value !== this.inputs.password.value){
+        this.message = true
+      }else {
+        if(valid){
+          this.$router.push('/auth/sign-up')
+        }
+
+      }
+    },
+    validPassword: function (password) {
+      let pass = /^(?=.*?[a-z])(?=.*?[0-9]).*$/
+      return pass.test(password);
     }
   },
   watch: {
-    email(newValue){
-      if (this.email){
+    "inputs.password.value"(newValue){
+      if (this.inputs.password.value){
         this.message = false
+      }
+      if (this.validPassword(this.inputs.password.value)) {
+        this.inputs.password.errors = ''
+      }
+    },
+    "inputs.confirmPassword.value"(newValue){
+      if (this.inputs.confirmPassword.value){
+        this.message = false
+      }
+      if (this.validPassword(this.inputs.confirmPassword.value)) {
+        this.inputs.confirmPassword.errors = ''
       }
     }
   }
 }
 </script>
 <style scoped>
-.forgot_password_page{
+.reset_password_page{
   width: 358px;
-  margin-top: 246px !important;
+  margin-top: 226px !important;
 }
-.button{
-  font-family: 'Public Sans';
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 18px;
-  text-transform: uppercase;
-  color: #FFFFFF;
-  background: #303C91;
-  border-radius: 8px;
-  width: 358px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 48px;
+.buttonValue{
+  width: 100%;
+  height: 100%;
+  margin-top: 10px;
 }
-.bg_fon{
-  background-image: url('static/image/Rectangle.png');
-  background-position: center;
-  background-size: cover;
-  width: 73px;
-  height: 73px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-  color: #303C91;
+.errorMessage{
+  height: 30px;
 }
 </style>

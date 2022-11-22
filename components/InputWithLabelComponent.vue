@@ -1,13 +1,20 @@
 <template>
   <div>
-    <label>{{label}}</label>
-    <input
-      :type="type"
-      :value="value"
-      v-bind="$attrs"
-      @input="$emit('input', $event.target.value)"
-      class="form-control input"
+    <slot name="inputLabel"></slot>
+    <b-form-group
+      :label="label" class="input_component"
     >
+      <b-input-group-prepend>
+      <input
+        :type="type"
+        :value="value"
+        @input="$emit('input', $event.target.value)"
+        class="form-control input"
+      >
+        <slot></slot>
+      </b-input-group-prepend>
+    </b-form-group>
+
   </div>
 </template>
 
@@ -24,15 +31,35 @@ export default {
       required: true
     },
     value: {
-      type: String
+      type: String,
+      default: ''
     }
-  }
+  },
+  data() {
+    return {
+    }
+  },
+
 }
 </script>
 
 <style scoped>
+  .input_component{
+    margin-top: 20px;
+    border-bottom: 2px solid silver;
+  }
   .input{
     border: none;
-    border-bottom: 2px solid silver;
+  }
+  .input:focus{
+    box-shadow: none;
+  }
+  span{
+    font-family: 'Public Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 17px;
+    color: #8B8C98;
   }
 </style>
