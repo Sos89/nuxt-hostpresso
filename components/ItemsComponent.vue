@@ -1,6 +1,8 @@
 <template>
   <div>
-    <slot name="tHeader"></slot>
+    <div>
+      <slot name="tHeader"></slot>
+    </div>
 
     <div class="itemRow">
       <slot name="tBody"></slot>

@@ -3,7 +3,6 @@
     <div class="descParDiv">
       <div v-for="text in descParagraph" class="m-3">{{text}}</div>
     </div>
-    <NuxtLink to="support/ticket-list"> ticket list</NuxtLink>
     <div class="cardContent">
       <div
         v-for="card in cards"

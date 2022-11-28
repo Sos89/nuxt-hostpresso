@@ -13,5 +13,8 @@ export default {
 </script>
 
 <style scoped>
-
+.navbar_content{
+  margin: 0;
+  padding: 0;
+}
 </style>
